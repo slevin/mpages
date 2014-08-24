@@ -1,3 +1,19 @@
+;;; mpages-mode.el --- A mode for quickly writing your Morning Pages
+
+;; Copyright (C) 2014 Sean Levin
+
+;; Author: Sean Levin
+;; Created: 20 Aug 2014
+;; Version: 20140824
+
+;;; Commentary:
+;; This is the commentary
+
+;;; Change Log:
+;; 20140824 First Version
+
+
+;;; Code:
 (defun formatted-count (num)
   (let ((numstr (number-to-string num)))
     (if (< num 750)
@@ -70,3 +86,9 @@
 ;; that way switching away won't make anything happen
 
 ;; get rid of ? stuff
+
+
+;; should customizable morning pages directory
+;; should ask the first time its run to set that
+
+;;; mpages-mode.el ends here
