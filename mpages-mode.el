@@ -14,16 +14,17 @@
 
 
 ;;; Code:
-(defun formatted-count (num)
+(defun formatted-count (num threshold)
+  "Colorize the NUM based on being above/below THRESHOLD."
   (let ((numstr (number-to-string num)))
-    (if (< num 750)
+    (if (< num threshold)
         (propertize numstr 'face '(:foreground "red"))
       (propertize numstr 'face '(:foreground "green")))))
 
 (defun word-count-string ()
   (let ((num (count-words 1 (length (buffer-string)))))
     (concat "Words: "
-            (formatted-count num)
+            (formatted-count num 750)
             "   "
             "Time Elapsed: "
             (tfmt (time-subtract (current-time) start-time)))))
@@ -36,11 +37,10 @@
   (setq header-line-format (word-count-string)))
 
 (defun end-timer-stuff ()
-  (progn
-    (cancel-timer count-timer)
-    (setq header-line-format nil)
-    (makunbound 'count-timer)
-    (makunbound 'start-time)))
+  (cancel-timer count-timer)
+  (setq header-line-format nil)
+  (makunbound 'count-timer)
+  (makunbound 'start-time))
 
 (defun tfmt (time)
   (format-time-string "%M:%S" time))
@@ -68,6 +68,10 @@
 
 ;; shouldn't change because I quit it right?
 
+;; why not start again
+(format-time-string "%H:%M:%S")
+
+;; maybe function names should be mpages prefix
 
 ;;(setup-time)
 ;;(word-count-string)
@@ -75,11 +79,6 @@
 ;; [nil 21498 24521 908091 5 update-word-count nil nil 0] timer when running?
 
 ;; figure out why it doesn't restart when I restart the thing
-
-
-;; make it casky (although I don't really need it)
-;; make it a github project so I can get some reputation points for it
-;; make it formatted nicely so it looks like something of quality
 
 ;; make the timer check happen only if the timer has been defined
 ;; so check for local variable and then do the header format
