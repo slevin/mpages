@@ -64,7 +64,7 @@
 
 (defun setup-timer ()
   "Start periodic timer to update the header with word count and time."
-  (setq mpages-mode-count-timer (run-at-time nil 5 'update-word-count-maybe))
+  (setq mpages-mode-count-timer (run-at-time nil 1 'timer-tick))
   (add-hook 'kill-buffer-hook 'end-timer-stuff nil t))
 
 (defun open-today ()
@@ -84,11 +84,6 @@
 ;;   (interactive)
 ;;   (update-word-count))
 
-;; shouldn't change because I quit it right?
-
-;; why not start again
-;;(format-time-string "%H:%M:%S")
-
 ;; maybe function names should be mpages prefix
 
 ;; turn it into a mode
@@ -96,8 +91,6 @@
 ;; make the timer check happen only if the timer has been defined
 ;; so check for local variable and then do the header format
 ;; that way switching away won't make anything happen
-
-;; get rid of ? stuff
 
 ;; should customizable morning pages directory
 ;; should ask the first time its run to set that
