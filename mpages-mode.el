@@ -15,6 +15,23 @@
 
 ;;; Code:
 
+(defgroup mpages nil
+  "Settings for Morning Pages editing"
+  :group 'text)
+
+(defcustom mpages-word-threshold 750
+  "This threshold is the number of words required before complete."
+  :type 'integer)
+
+(defcustom mpages-update-frequency 1
+  "How many seconds before recounting your words.
+Increasing this number may improve performance."
+  :type 'integer)
+
+(defcustom mpages-content-directory ""
+  "This is the directory to store Morning Pages documents."
+  :type 'directory)
+
 (defvar mpages-mode-start-time)
 (defvar mpages-mode-count-timer)
 
@@ -28,7 +45,7 @@
 (defun word-count-string (time-elapsed word-count)
   "Generate header line format string for TIME-ELAPSED and WORD-COUNT."
   (concat "Words: "
-          (formatted-count word-count 750)
+          (formatted-count word-count mpages-word-threshold)
           "   "
           "Time Elapsed: "
           (tfmt time-elapsed)))
@@ -64,12 +81,14 @@
 
 (defun setup-timer ()
   "Start periodic timer to update the header with word count and time."
-  (setq mpages-mode-count-timer (run-at-time nil 1 'timer-tick))
+  (setq mpages-mode-count-timer (run-at-time nil mpages-update-frequency 'timer-tick))
   (add-hook 'kill-buffer-hook 'end-timer-stuff nil t))
 
 (defun open-today ()
   "Open a Morning Pages file for today."
-  (find-file (concat "~/wrk/words/" (format-time-string "%Y%m%d") ".txt")))
+  (find-file (concat "~/wrk/words/" (format-time-string "%Y%m%d") ".txt"))
+  (auto-fill-mode)
+  (set-fill-column 80))
 
 ;; open todays file
 (defun mp-today ()
@@ -87,6 +106,10 @@
 ;; maybe function names should be mpages prefix
 
 ;; turn it into a mode
+
+;; bigger text
+;; disappearing text (make it feel fading away)
+;; sorter word wrap to make it feel more like more is coming out
 
 ;; make the timer check happen only if the timer has been defined
 ;; so check for local variable and then do the header format
