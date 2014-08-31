@@ -21,19 +21,30 @@
 
 (defcustom mpages-word-threshold 750
   "This threshold is the number of words required before complete."
-  :type 'integer)
+  :type 'integer
+  :group 'mpages)
 
 (defcustom mpages-update-frequency 1
   "How many seconds before recounting your words.
 Increasing this number may improve performance."
-  :type 'integer)
+  :type 'integer
+  :group 'mpages)
 
-(defcustom mpages-content-directory ""
+(defcustom mpages-content-directory "~/wrk/words/"
   "This is the directory to store Morning Pages documents."
-  :type 'directory)
+  :type 'directory
+  :group 'mpages)
+
+;; (defcustom mpages-content-directory (read-directory-name "Directory for mpages files: ")
+;;   "This is the directory to store Morning Pages documents."
+;;   :type 'directory)
 
 (defvar mpages-mode-start-time)
 (defvar mpages-mode-count-timer)
+
+(defun get-mpages-directory (dir)
+  (interactive "DDirectory for mpages files: ")
+  dir)
 
 (defun formatted-count (num threshold)
   "Colorize the NUM based on being above/below THRESHOLD."
@@ -52,13 +63,11 @@ Increasing this number may improve performance."
 
 (defun timer-tick ()
   "Run update on header with latest values."
-  (let ((word-count (count-words 1 (length (buffer-string))))
-        (time-elapsed (time-subtract (current-time) mpages-mode-start-time)))
-    (update-word-count time-elapsed word-count)))
-
-;; (defun update-word-count-maybe (start-time)
-;;   (if (boundp 'mpages-mode-count-timer)
-;;       (update-word-count start-time)))
+  ;; this check makes sure it only runs update if the timer has been
+  (if mpages-mode-count-timer
+      (let ((word-count (count-words 1 (length (buffer-string))))
+            (time-elapsed (time-subtract (current-time) mpages-mode-start-time)))
+        (update-word-count time-elapsed word-count))))
 
 (defun update-word-count (time-elapsed word-count)
   "Set the generated header line with TIME-ELAPSED and WORD-COUNT."
@@ -81,12 +90,12 @@ Increasing this number may improve performance."
 
 (defun setup-timer ()
   "Start periodic timer to update the header with word count and time."
-  (setq mpages-mode-count-timer (run-at-time nil mpages-update-frequency 'timer-tick))
+  (setq-local mpages-mode-count-timer (run-at-time nil mpages-update-frequency 'timer-tick))
   (add-hook 'kill-buffer-hook 'end-timer-stuff nil t))
 
 (defun open-today ()
   "Open a Morning Pages file for today."
-  (find-file (concat "~/wrk/words/" (format-time-string "%Y%m%d") ".txt"))
+  (find-file (concat mpages-content-directory (format-time-string "%Y%m%d") ".txt"))
   (auto-fill-mode)
   (set-fill-column 80))
 
@@ -103,19 +112,5 @@ Increasing this number may improve performance."
 ;;   (interactive)
 ;;   (update-word-count))
 
-;; maybe function names should be mpages prefix
-
-;; turn it into a mode
-
-;; bigger text
-;; disappearing text (make it feel fading away)
-;; sorter word wrap to make it feel more like more is coming out
-
-;; make the timer check happen only if the timer has been defined
-;; so check for local variable and then do the header format
-;; that way switching away won't make anything happen
-
-;; should customizable morning pages directory
-;; should ask the first time its run to set that
-
+(provide 'mpages-mode)
 ;;; mpages-mode.el ends here
