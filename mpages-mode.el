@@ -16,11 +16,12 @@
 ;;; Code:
 
 (defgroup mpages nil
-  "Settings for Morning Pages editing"
-  :group 'text)
+  "Mpages helps with writing a daily Morning Pages style diary."
+  :prefix "mpages-"
+  :group 'wp)
 
 (defcustom mpages-word-threshold 750
-  "This threshold is the number of words required before complete."
+  "This threshold is the number of words required before daily diary is complete."
   :type 'integer
   :group 'mpages)
 
@@ -31,7 +32,7 @@ Increasing this number may improve performance."
   :group 'mpages)
 
 (defcustom mpages-content-directory "~/wrk/words/"
-  "This is the directory to store Morning Pages documents."
+  "This is the directory to store your daily Morning Pages documents."
   :type 'directory
   :group 'mpages)
 
