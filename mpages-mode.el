@@ -36,6 +36,11 @@ Increasing this number may improve performance."
   :type 'directory
   :group 'mpages)
 
+(defcustom testydir nil
+  "This is a testy dir."
+  :type 'directory
+  :group 'mpages)
+
 ;; (defcustom mpages-content-directory (read-directory-name "Directory for mpages files: ")
 ;;   "This is the directory to store Morning Pages documents."
 ;;   :type 'directory)
@@ -43,9 +48,9 @@ Increasing this number may improve performance."
 (defvar mpages-mode-start-time)
 (defvar mpages-mode-count-timer)
 
-(defun get-mpages-directory (dir)
-  (interactive "DDirectory for mpages files: ")
-  dir)
+;; (defun get-mpages-directory (dir)
+;;   (interactive "DDirectory for mpages files: ")
+;;   dir)
 
 (defun formatted-count (num threshold)
   "Colorize the NUM based on being above/below THRESHOLD."
@@ -104,9 +109,12 @@ Increasing this number may improve performance."
 (defun mp-today ()
   "Entry point to starting mpages-mode."
   (interactive)
+   ;; (if (not testydir)
+   ;;     (setq testydir (read-directory-name "Your directory: ")))
   (open-today)
   (setup-time)
   (setup-timer))
+
 
 ;; (defun testy ()
 ;;   "Throwaway function for testing."
