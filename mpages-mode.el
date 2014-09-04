@@ -31,26 +31,13 @@ Increasing this number may improve performance."
   :type 'integer
   :group 'mpages)
 
-(defcustom mpages-content-directory "~/wrk/words/"
+(defcustom mpages-content-directory nil
   "This is the directory to store your daily Morning Pages documents."
   :type 'directory
   :group 'mpages)
 
-(defcustom testydir nil
-  "This is a testy dir."
-  :type 'directory
-  :group 'mpages)
-
-;; (defcustom mpages-content-directory (read-directory-name "Directory for mpages files: ")
-;;   "This is the directory to store Morning Pages documents."
-;;   :type 'directory)
-
 (defvar mpages-mode-start-time)
 (defvar mpages-mode-count-timer)
-
-;; (defun get-mpages-directory (dir)
-;;   (interactive "DDirectory for mpages files: ")
-;;   dir)
 
 (defun formatted-count (num threshold)
   "Colorize the NUM based on being above/below THRESHOLD."
@@ -101,7 +88,7 @@ Increasing this number may improve performance."
 
 (defun open-today ()
   "Open a Morning Pages file for today."
-  (find-file (concat mpages-content-directory (format-time-string "%Y%m%d") ".txt"))
+  (find-file (concat (file-name-as-directory mpages-content-directory) (format-time-string "%Y%m%d") ".txt"))
   (auto-fill-mode)
   (set-fill-column 80))
 
@@ -109,17 +96,17 @@ Increasing this number may improve performance."
 (defun mp-today ()
   "Entry point to starting mpages-mode."
   (interactive)
-   ;; (if (not testydir)
-   ;;     (setq testydir (read-directory-name "Your directory: ")))
+  (if (not mpages-content-directory)
+      (customize-save-variable 'mpages-content-directory (file-name-as-directory (read-directory-name "Directory to put your Morning Pages: "))))
+  (make-directory mpages-content-directory t) ;; ensure it exists
   (open-today)
   (setup-time)
   (setup-timer))
 
-
 ;; (defun testy ()
 ;;   "Throwaway function for testing."
 ;;   (interactive)
-;;   (update-word-count))
+;;   (makunbound 'mpages-content-directory))
 
 (provide 'mpages-mode)
 ;;; mpages-mode.el ends here

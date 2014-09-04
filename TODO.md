@@ -1,50 +1,26 @@
 # Todo
 
-how to test getting a variable before starting?
-
-
-
-maybe makunbound could get rid of it?
- to test again
- then just do the read variable first?
-
-
-make sure directory exists and if not
- create it recursively
-
-
-
-
-
-should customizable morning pages directory
-should ask the first time its run to set that
-
-
-should make sure that directory exists before finding the file
- test with a broken directory to see what happens
-
-
-not sure if it should be a mode or not
-if not a mode then remove references to "mode"
-
 
 prefix all functions and variables with with mpages
  and get rid of the mode stuff
-
+change name
 
 create readme to explain what it is
+
+blog post on the process
+
 
 
 # Future
 zoom font default +1
+ could make it a setting
+ and wordwrap a setting
 
 could check for ido and do ido read-directory-name
 
 some testing just to figure out how to do it with emacs
 
 create a cask package
-
-blog post on the process
 
 disappearing text (make it feel fading away)
 
