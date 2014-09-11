@@ -7,7 +7,11 @@ change name
 
 create readme to explain what it is
 
+
 blog post on the process
+ writing it
+ cask
+ testing
 
 
 
