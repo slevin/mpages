@@ -1,7 +1,7 @@
 (source gnu)
 (source melpa)
 
-(package-file "mpages-mode.el")
+(package-file "mpages.el")
 
 (development
  (depends-on "f")

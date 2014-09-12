@@ -1,4 +1,4 @@
-;;; mpages-mode.el --- A mode for quickly writing your Morning Pages
+;;; mpages.el --- A mode for quickly writing your Morning Pages
 
 ;; Copyright (C) 2014 Sean Levin
 
@@ -36,55 +36,55 @@ Increasing this number may improve performance."
   :type 'directory
   :group 'mpages)
 
-(defvar mpages-mode-start-time)
-(defvar mpages-mode-count-timer)
+(defvar mpages-start-time)
+(defvar mpages-count-timer)
 
-(defun formatted-count (num threshold)
+(defun mpages-formatted-count (num threshold)
   "Colorize the NUM based on being above/below THRESHOLD."
   (let ((numstr (number-to-string num)))
     (if (< num threshold)
         (propertize numstr 'face '(:foreground "red"))
       (propertize numstr 'face '(:foreground "green")))))
 
-(defun word-count-string (time-elapsed word-count)
+(defun mpages-word-count-string (time-elapsed word-count)
   "Generate header line format string for TIME-ELAPSED and WORD-COUNT."
   (concat "Words: "
-          (formatted-count word-count mpages-word-threshold)
+          (mpages-formatted-count word-count mpages-word-threshold)
           "   "
           "Time Elapsed: "
-          (tfmt time-elapsed)))
+          (mpages-tfmt time-elapsed)))
 
-(defun timer-tick ()
+(defun mpages-timer-tick ()
   "Run update on header with latest values."
   ;; this check makes sure it only runs update if the timer has been
-  (if mpages-mode-count-timer
+  (if mpages-count-timer
       (let ((word-count (count-words 1 (length (buffer-string))))
-            (time-elapsed (time-subtract (current-time) mpages-mode-start-time)))
-        (update-word-count time-elapsed word-count))))
+            (time-elapsed (time-subtract (current-time) mpages-start-time)))
+        (mpages-update-word-count time-elapsed word-count))))
 
-(defun update-word-count (time-elapsed word-count)
+(defun mpages-update-word-count (time-elapsed word-count)
   "Set the generated header line with TIME-ELAPSED and WORD-COUNT."
-  (setq header-line-format (word-count-string time-elapsed word-count)))
+  (setq header-line-format (mpages-word-count-string time-elapsed word-count)))
 
-(defun end-timer-stuff ()
+(defun mpages-end-timer-stuff ()
   "Remove all runtime stuff related to this mode."
-  (cancel-timer mpages-mode-count-timer)
+  (cancel-timer mpages-count-timer)
   (setq header-line-format nil)
-  (makunbound 'mpages-mode-count-timer)
-  (makunbound 'mpages-mode-start-time))
+  (makunbound 'mpages-count-timer)
+  (makunbound 'mpages-start-time))
 
-(defun tfmt (time)
+(defun mpages-tfmt (time)
   "Format the TIME for the header."
   (format-time-string "%M:%S" time))
 
-(defun setup-time ()
+(defun mpages-setup-time ()
   "Capture the start time of the mode."
-  (setq mpages-mode-start-time (current-time)))
+  (setq mpages-start-time (current-time)))
 
-(defun setup-timer ()
+(defun mpages-setup-timer ()
   "Start periodic timer to update the header with word count and time."
-  (setq-local mpages-mode-count-timer (run-at-time nil mpages-update-frequency 'timer-tick))
-  (add-hook 'kill-buffer-hook 'end-timer-stuff nil t))
+  (setq-local mpages-count-timer (run-at-time nil mpages-update-frequency 'mpages-timer-tick))
+  (add-hook 'kill-buffer-hook 'mpages-end-timer-stuff nil t))
 
 (defun open-today ()
   "Open a Morning Pages file for today."
@@ -93,20 +93,20 @@ Increasing this number may improve performance."
   (set-fill-column 80))
 
 ;; open todays file
-(defun mp-today ()
-  "Entry point to starting mpages-mode."
+(defun mpages-today ()
+  "Entry point to starting mpages."
   (interactive)
   (if (not mpages-content-directory)
       (customize-save-variable 'mpages-content-directory (file-name-as-directory (read-directory-name "Directory to put your Morning Pages: "))))
   (make-directory mpages-content-directory t) ;; ensure it exists
   (open-today)
-  (setup-time)
-  (setup-timer))
+  (mpages-setup-time)
+  (mpages-setup-timer))
 
 ;; (defun testy ()
 ;;   "Throwaway function for testing."
 ;;   (interactive)
 ;;   (makunbound 'mpages-content-directory))
 
-(provide 'mpages-mode)
-;;; mpages-mode.el ends here
+(provide 'mpages)
+;;; mpages.el ends here
