@@ -33,7 +33,7 @@ Preferred method of installation is through MELPA and the package system. Search
 
 Otherwise download the file. Put it wherever you like your elisp files and add
 
-```(load "/path/to/mpages-mode.el")```
+```(load "/path/to/mpages.el")```
 
 to your .emacs file.
 
