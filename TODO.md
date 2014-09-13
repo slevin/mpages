@@ -1,14 +1,14 @@
 # Todo
 
-create a cask package
-
-better readme
-
 blog post on the process
  writing it
  cask
  testing
 
+test should just exercise the calls just to make sure things work
+doens't need to be right but just not crash, I could test that
+
+travis-ci
 
 # Future
 
