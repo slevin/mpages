@@ -15,7 +15,7 @@ is 3 pages which is about 750 words. It takes about 15 minutes.
 
 It only took a few days before I was hooked. There's something about putting the random
 circular thoughts that are preoccupying your mind into complete sentences. When I dwell
-in thought, they just keep going in circles. But after 15minuts of dumping
+in thought, they just keep going in circles. But after 15 minutes of dumping
 it all out. I feel finished. Thoughts have been had. I move on.
 
 I think at the end of the day we all want to talk about ourselves, share our feelings, dwell on
