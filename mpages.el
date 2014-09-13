@@ -20,7 +20,7 @@
 ;; In my experience of doing it daily I fret less about silly things and work
 ;; through my issues more productively.  I recommend it highly.
 
-;; Opening up Emacs and running `M-x mpages-today' will open up an empty buffer
+;; Opening up Emacs and running `M-x mpages' will open up an empty buffer
 ;; pointed at a txt file for today.  As you type it will keep track of the time
 ;; spent and the number of words typed.  The default, 750  words approximates
 ;; three written pages.  A competent typist, just letting his or her thoughts
@@ -113,7 +113,7 @@ Increasing this number may improve performance."
   (set-fill-column 80))
 
 ;; open todays file
-(defun mpages-today ()
+(defun mpages ()
   "Entry point to starting mpages."
   (interactive)
   (if (not mpages-content-directory)
