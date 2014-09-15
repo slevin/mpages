@@ -106,7 +106,7 @@ Increasing this number may improve performance."
   (setq-local mpages-count-timer (run-at-time nil mpages-update-frequency 'mpages-timer-tick))
   (add-hook 'kill-buffer-hook 'mpages-end-timer-stuff nil t))
 
-(defun open-today ()
+(defun mpages-open-today ()
   "Open a Morning Pages file for today."
   (find-file (concat (file-name-as-directory mpages-content-directory) (format-time-string "%Y%m%d") ".txt"))
   (auto-fill-mode)
@@ -119,7 +119,7 @@ Increasing this number may improve performance."
   (if (not mpages-content-directory)
       (customize-save-variable 'mpages-content-directory (file-name-as-directory (read-directory-name "Directory to put your Morning Pages: "))))
   (make-directory mpages-content-directory t) ;; ensure it exists
-  (open-today)
+  (mpages-open-today)
   (mpages-setup-time)
   (mpages-setup-timer))
 
