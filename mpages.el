@@ -77,7 +77,7 @@ Increasing this number may improve performance."
 (defun mpages-timer-tick ()
   "Run update on header with latest values."
   ;; this check makes sure it only runs update if the timer has been
-  (if mpages-count-timer
+  (if (boundp 'mpages-count-timer)
       (let ((word-count (count-words 1 (length (buffer-string))))
             (time-elapsed (time-subtract (current-time) mpages-start-time)))
         (mpages-update-word-count time-elapsed word-count))))
