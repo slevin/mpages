@@ -4,7 +4,7 @@
 
 ;; Author: Sean Levin
 ;; Created: 20 Aug 2014
-;; Version: 20140913
+;; Version: 20141030
 ;; URL: https://github.com/slevin/mpages
 
 ;;; Commentary:
@@ -32,6 +32,7 @@
 ;;; Change Log:
 ;; 20140824 First Version
 ;; 20140913 Made fit for consumption
+;; 20141030 Fix void-variable bug for Emacs 24.4
 
 ;;; Code:
 
