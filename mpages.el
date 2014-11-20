@@ -4,7 +4,7 @@
 
 ;; Author: Sean Levin
 ;; Created: 20 Aug 2014
-;; Version: 20141030
+;; Version: 20141120
 ;; URL: https://github.com/slevin/mpages
 
 ;;; Commentary:
@@ -30,9 +30,10 @@
 
 
 ;;; Change Log:
-;; 20140824 First Version
-;; 20140913 Made fit for consumption
+;; 20141120 Fix counting words error when empty buffer
 ;; 20141030 Fix void-variable bug for Emacs 24.4
+;; 20140913 Made fit for consumption
+;; 20140824 First Version
 
 ;;; Code:
 
@@ -79,8 +80,11 @@ Increasing this number may improve performance."
   "Run update on header with latest values."
   ;; this check makes sure it only runs update if the timer has been
   (if (boundp 'mpages-count-timer)
-      (let ((word-count (count-words 1 (length (buffer-string))))
-            (time-elapsed (time-subtract (current-time) mpages-start-time)))
+      (let* ((len (length (buffer-string)))
+             (word-count (if (> len 0)
+                             (count-words 1 (length (buffer-string)))
+                           0))
+             (time-elapsed (time-subtract (current-time) mpages-start-time)))
         (mpages-update-word-count time-elapsed word-count))))
 
 (defun mpages-update-word-count (time-elapsed word-count)
