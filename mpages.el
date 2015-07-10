@@ -118,6 +118,7 @@ Increasing this number may improve performance."
   (set-fill-column 80))
 
 ;; open todays file
+;;;###autoload
 (defun mpages ()
   "Entry point to starting mpages."
   (interactive)
