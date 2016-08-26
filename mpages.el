@@ -60,6 +60,7 @@ Increasing this number may improve performance."
 
 (defvar mpages-start-time)
 (defvar mpages-count-timer)
+(defvar mpages-file-name-format "%Y-%m-%d")
 
 (defun mpages-formatted-count (num threshold)
   "Colorize the NUM based on being above/below THRESHOLD."
@@ -113,9 +114,51 @@ Increasing this number may improve performance."
 
 (defun mpages-open-today ()
   "Open a Morning Pages file for today."
-  (find-file (concat (file-name-as-directory mpages-content-directory) (format-time-string "%Y%m%d") ".txt"))
+  (find-file (concat (file-name-as-directory mpages-content-directory) (format-time-string mpages-file-name-format) ".txt"))
   (auto-fill-mode)
   (set-fill-column 80))
+
+
+(defun mpages-forward-page()
+  "Open Morning page of the next day."
+  (interactive)
+  (mpages-navigate-page +1))
+
+
+(defun mpages-backward-page()
+  "Open Morning page of the previous day."
+  (interactive)
+  (mpages-navigate-page -1))
+
+
+(defun mpages-navigate-page(deltaDays)
+  "Return the file path of Morning page after moving deltaDays from the current page.
+If the current page is not Morning page, it will return the file path of Today page."
+  (interactive)
+  (let ((current-file-name (buffer-file-name))
+        file-name
+        nextTimestamp
+        gregorian-date
+        formatted-date
+        next-file-name)
+    (condition-case nil
+        (progn
+          (setq file-name (file-name-base current-file-name))   ;; expect value format: 2016-12-25
+          (setq nextTimestamp (+ deltaDays (org-time-string-to-absolute file-name)))    ;; move deltaDays
+          (setq gregorian-date (calendar-gregorian-from-absolute nextTimestamp))
+          (setq formatted-date
+                (format "%04d-%02d-%02d"
+                        (elt gregorian-date 2) ; month
+                        (elt gregorian-date 0) ; day
+                        (elt gregorian-date 1)))
+          (setq next-file-name (concat (file-name-as-directory mpages-content-directory) formatted-date ".txt"))
+          (if (file-exists-p next-file-name)
+              (find-file next-file-name)
+            (mpages-open-today)))
+      (error
+       (message "oh no!")
+       (mpages-open-today)))))
+
 
 ;; open todays file
 ;;;###autoload
